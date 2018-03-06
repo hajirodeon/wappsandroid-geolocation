@@ -1,0 +1,11 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "geolocation",
+  "short_name": "geolocation",
+  "version": "io.geolocation.geolocation",
+  "description": "geolocation",
+  "author": "geolocation",
+  "icons": [],
+  "start_url": "index.html"
+}
