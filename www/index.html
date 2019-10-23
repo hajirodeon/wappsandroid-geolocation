@@ -1,129 +1,61 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta http-equiv="content-type" content="text/x-component">
-    <title>wappsandroid.....</title>
+<html>
+  <head>
+    <title>Compass Example</title>
 
-    <!-- General meta details -->
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="<!-- replace here with Google author profile -->" />
-    <meta name="robot" content="index,follow" />
+    <script type="text/javascript" charset="utf-8" src="phonegap-1.0.0.js"></script>
+    <script type="text/javascript" charset="utf-8">
 
+    // The watch id references the current watchHeading
+    var watchID = null;
 
+    // Wait for PhoneGap to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
 
+    // PhoneGap is ready
+    //
+    function onDeviceReady() {
+        startWatch();
+    }
 
-    <!-- favicon -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <link rel="icon" type="image/png" href="favicon.png" />
+    // Start watching the compass
+    //
+    function startWatch() {
 
+        // Update compass every 3 seconds
+        var options = { frequency: 3000 };
 
+        watchID = navigator.compass.watchHeading(onSuccess, onError, options);
+    }
 
+    // Stop watching the compass
+    //
+    function stopWatch() {
+        if (watchID) {
+            navigator.compass.clearWatch(watchID);
+            watchID = null;
+        }
+    }
 
+    // onSuccess: Get the current heading
+    //
+    function onSuccess(heading) {
+        var element = document.getElementById('heading');
+        element.innerHTML = 'Heading: ' + heading;
+    }
 
+    // onError: Failed to get the heading
+    //
+    function onError() {
+        alert('onError!');
+    }
 
-
-
-
-
-</head>
-
-
-
-<body>
-
-
-
-
-<table width="100% border="0">
-<tr bgcolor="grey">
-<td height="100" align="center">
-
-<h1 align="center">wappsandroid</h1>
-</td>
-</tr>
-</table>
-
-
-
-
-<table width="100% border="0">
-<tr valign="top" bgcolor="yellow">
-<td height="500">
-
-
-
-
-<button onclick="getLocation()">LOKASIKU</button>
-
-<div id="mapholder"></div>
-
-<script>
-var x = document.getElementById("demo");
-
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition, showError);
-    } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-}
-
-function showPosition(position) {
-    var latlon = position.coords.latitude + "," + position.coords.longitude;
-    var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="
-    +latlon+"&zoom=14&size=400x300&key=AIzaSyBu-916DdpKAjTmJNIgngS6HL_kDIKU0aU";
-    document.getElementById("mapholder").innerHTML = "<img src='"+img_url+"'>";
-}
-//To use this code on your website, get a free API key from Google.
-//Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
-
-function showError(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            x.innerHTML = "User denied the request for Geolocation."
-            break;
-        case error.POSITION_UNAVAILABLE:
-            x.innerHTML = "Location information is unavailable."
-            break;
-        case error.TIMEOUT:
-            x.innerHTML = "The request to get user location timed out."
-            break;
-        case error.UNKNOWN_ERROR:
-            x.innerHTML = "An unknown error occurred."
-            break;
-    }
-}
-</script>
-
-
-
-</td>
-</tr>
-</table>
-
-
-
-
-
-
-
-
-<p align="center">
-2018. Belajar WAPPSANDROID
-</p>
-<hr>
-
-
-
-
-
-
-
-</body>
+    </script>
+  </head>
+  <body>
+    <div id="heading">Waiting for heading...</div>
+    <button onclick="startWatch();">Start Watching</button>
+    <button onclick="stopWatch();">Stop Watching</button>
+  </body>
 </html>
